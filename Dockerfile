@@ -10,6 +10,5 @@ RUN pip install -r requirements.txt
 COPY . .
 
 
-COPY . ./
 
 CMD ["python", "server.py"]
