@@ -14,7 +14,7 @@ pipeline {
                 dir('.') {
                     sh 'pwd'
                     sh 'docker build -t customimage .'
-                    sh 'docker run -d -p 3000:5001 --name customimagetest customimage'
+                    sh 'docker run -d -p 3000:5001 --name customtest customimage'
                 }
             }
         }
