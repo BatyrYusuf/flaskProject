@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Store the list of running containers in a variable
-containers=$(docker ps -a --format "{{.Names}}" --filter name=customimage)
+containers=$(docker ps -a --format "{{.Names}}" --filter name=customimagetest)
 
 # If there are no running containers, print a message and exit
 if [ -z "$containers" ]; then
