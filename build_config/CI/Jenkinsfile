@@ -1,0 +1,36 @@
+pipeline {
+    agent any
+    stages {
+        stage('Pre-Build') {
+           steps {
+                dir('build_config/') {
+                    sh 'pwd'
+                    sh 'sh stop_container'
+                }
+            }
+        }
+        stage('Build New Container') {
+           steps {
+                dir('.') {
+                    sh 'pwd'
+                    sh 'docker build -t customimage .'
+                    sh 'docker run -d -p 3030:5001 --name customimage customimage'
+                }
+            }
+        }
+     }
+    post {
+        failure {
+            emailext body: "Login for detail to http://3.68.71.194:8080/", subject: "Build failed in Jenkins: ${env.JOB_NAME}  FAILED - Build #${env.BUILD_NUMBER} | ${env.JOB_NAME}", to: 'yusufcansiz1998@gmail.com,cansiz699@gmail.com' 
+        }
+        success {
+            emailext body: "Login for detail to http://3.68.71.194:8080/", subject: "Build success in Jenkins: ${env.JOB_NAME} SUCCESS - Build #${env.BUILD_NUMBER} | ${env.JOB_NAME}", to: 'yusufcansiz1998@gmail.com,cansiz699@gmail.com'
+        }
+        unstable {
+            emailext body: "Login for detail to http://3.68.71.194:8080/", subject: "Build unstable in Jenkins ${env.JOB_NAME}  UNSTABLE - Build #${env.BUILD_NUMBER} | ${env.JOB_NAME}", to: 'yusufcansiz1998@gmail.com,cansiz699@gmail.com'
+        }
+        changed {
+            emailext body: "Login for detail to http://3.68.71.194:8080/", subject: "Build changed in Jenkins ${env.JOB_NAME}  CHANGED - Build #${env.BUILD_NUMBER} | ${env.JOB_NAME}", to: 'yusufcansiz1998@gmail.com,cansiz699@gmail.com'
+        }
+    }
+}

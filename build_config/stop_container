@@ -1,0 +1,19 @@
+#!/bin/bash
+
+# Store the list of running containers in a variable
+containers=$(docker ps -a --format "{{.Names}}" --filter name=customimage)
+
+# If there are no running containers, print a message and exit
+if [ -z "$containers" ]; then
+  echo "No running containers found"
+  exit 0
+fi
+
+# Loop through each container and stop and remove it
+for container in $containers; do
+  echo "Stopping and removing container: $container"
+  docker stop $container
+  docker rm $container
+done
+
+echo "All containers stopped and removed successfully"
